@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-Entry point script for the DeerFlow project.
+This is the entry point script for the Sail-AI project.
 """
 
 import argparse
