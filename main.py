@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-This is the entry point script for the Sail-AI project.
+Entry point script for the Sail-AI project.
 """
 
 import argparse
