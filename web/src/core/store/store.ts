@@ -120,6 +120,7 @@ export async function sendMessage(
   let messageId: string | undefined;
   try {
     for await (const event of stream) {
+      //console.info('[sendMessage] received event:', event);
       const { type, data } = event;
       messageId = data.id;
       let message: Message | undefined;

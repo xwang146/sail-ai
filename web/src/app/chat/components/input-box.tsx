@@ -217,12 +217,10 @@ export function InputBox({
               title={
                 <div>
                   <h3 className="mb-2 font-bold">
-                    Deep Thinking Mode: {enableDeepThinking ? "On" : "Off"}
+                    深度思考模式：{enableDeepThinking ? "开启" : "关闭"}
                   </h3>
                   <p>
-                    When enabled, DeerFlow will use reasoning model (
-                    {config.models.reasoning?.[0]}) to generate more thoughtful
-                    plans.
+                    启用后，DeerFlow 会使用推理模型（{config.models.reasoning?.[0]}）生成更有深度的计划。
                   </p>
                 </div>
               }
@@ -237,7 +235,7 @@ export function InputBox({
                   setEnableDeepThinking(!enableDeepThinking);
                 }}
               >
-                <Lightbulb /> Deep Thinking
+                <Lightbulb /> 深度思考
               </Button>
             </Tooltip>
           )}
@@ -247,12 +245,10 @@ export function InputBox({
             title={
               <div>
                 <h3 className="mb-2 font-bold">
-                  Investigation Mode: {backgroundInvestigation ? "On" : "Off"}
+                  预调研模式：{backgroundInvestigation ? "开启" : "关闭"}
                 </h3>
                 <p>
-                  When enabled, DeerFlow will perform a quick search before
-                  planning. This is useful for researches related to ongoing
-                  events and news.
+                  启用后，DeerFlow 会在规划前进行快速检索，适合时事、新闻等相关研究。
                 </p>
               </div>
             }
@@ -267,13 +263,13 @@ export function InputBox({
                 setEnableBackgroundInvestigation(!backgroundInvestigation)
               }
             >
-              <Detective /> Investigation
+              <Detective /> 预调研
             </Button>
           </Tooltip>
           <ReportStyleDialog />
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Tooltip title="Enhance prompt with AI">
+          <Tooltip title="AI 优化提示词">
             <Button
               variant="ghost"
               size="icon"
@@ -293,7 +289,7 @@ export function InputBox({
               )}
             </Button>
           </Tooltip>
-          <Tooltip title={responding ? "Stop" : "Send"}>
+          <Tooltip title={responding ? "停止" : "发送"}>
             <Button
               variant="outline"
               size="icon"

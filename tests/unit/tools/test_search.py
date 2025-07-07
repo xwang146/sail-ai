@@ -16,8 +16,8 @@ class TestGetWebSearchTool:
         assert tool.name == "web_search"
         assert tool.max_results == 5
         assert tool.include_raw_content is True
-        assert tool.include_images is True
-        assert tool.include_image_descriptions is True
+        assert tool.include_images is False
+        assert tool.include_image_descriptions is False
 
     @patch("src.tools.search.SELECTED_SEARCH_ENGINE", SearchEngine.DUCKDUCKGO.value)
     def test_get_web_search_tool_duckduckgo(self):
@@ -52,3 +52,12 @@ class TestGetWebSearchTool:
     def test_get_web_search_tool_brave_no_api_key(self):
         tool = get_web_search_tool(max_search_results=1)
         assert tool.search_wrapper.api_key == ""
+
+    @patch("src.tools.search.SELECTED_SEARCH_ENGINE", SearchEngine.TAVILY.value)
+    def test_get_web_search_tool_tavily_with_images(self):
+        tool = get_web_search_tool(max_search_results=5, include_images=True)
+        assert tool.name == "web_search"
+        assert tool.max_results == 5
+        assert tool.include_raw_content is True
+        assert tool.include_images is True
+        assert tool.include_image_descriptions is True

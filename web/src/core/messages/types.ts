@@ -12,7 +12,8 @@ export interface Message {
     | "researcher"
     | "coder"
     | "reporter"
-    | "podcast";
+    | "podcast"
+    | "questioner";
   role: MessageRole;
   isStreaming?: boolean;
   content: string;

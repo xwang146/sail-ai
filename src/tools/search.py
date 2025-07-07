@@ -26,14 +26,14 @@ LoggedArxivSearch = create_logged_tool(ArxivQueryRun)
 
 
 # Get the selected search tool
-def get_web_search_tool(max_search_results: int):
+def get_web_search_tool(max_search_results: int, include_images: bool = False):
     if SELECTED_SEARCH_ENGINE == SearchEngine.TAVILY.value:
         return LoggedTavilySearch(
             name="web_search",
             max_results=max_search_results,
             include_raw_content=True,
-            include_images=True,
-            include_image_descriptions=True,
+            include_images=include_images,
+            include_image_descriptions=include_images,
         )
     elif SELECTED_SEARCH_ENGINE == SearchEngine.DUCKDUCKGO.value:
         return LoggedDuckDuckGoSearch(

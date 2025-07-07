@@ -15,6 +15,7 @@ from .nodes import (
     coder_node,
     human_feedback_node,
     background_investigation_node,
+    questioner_node,
 )
 
 
@@ -37,8 +38,9 @@ def continue_to_running_research_team(state: State):
 def _build_base_graph():
     """Build and return the base state graph with all nodes and edges."""
     builder = StateGraph(State)
-    builder.add_edge(START, "coordinator")
+    builder.add_edge(START, "questioner")
     builder.add_node("coordinator", coordinator_node)
+    builder.add_node("questioner", questioner_node)
     builder.add_node("background_investigator", background_investigation_node)
     builder.add_node("planner", planner_node)
     builder.add_node("reporter", reporter_node)

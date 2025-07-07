@@ -21,26 +21,26 @@ import { Tooltip } from "./tooltip";
 const REPORT_STYLES = [
   {
     value: "academic" as const,
-    label: "Academic",
-    description: "Formal, objective, and analytical with precise terminology",
+    label: "学术",
+    description: "正式、客观、分析性强，术语精确",
     icon: GraduationCap,
   },
   {
     value: "popular_science" as const,
-    label: "Popular Science",
-    description: "Engaging and accessible for general audience",
+    label: "科普",
+    description: "通俗易懂，适合大众",
     icon: FileText,
   },
   {
     value: "news" as const,
-    label: "News",
-    description: "Factual, concise, and impartial journalistic style",
+    label: "新闻",
+    description: "事实、简明、公正的新闻风格",
     icon: Newspaper,
   },
   {
     value: "social_media" as const,
-    label: "Social Media",
-    description: "Concise, attention-grabbing, and shareable",
+    label: "社交媒体",
+    description: "简洁吸引眼球，易于分享",
     icon: Users,
   },
 ];
@@ -68,11 +68,10 @@ export function ReportStyleDialog() {
         title={
           <div>
             <h3 className="mb-2 font-bold">
-              Writing Style: {currentStyleConfig.label}
+              写作风格：{currentStyleConfig.label}
             </h3>
             <p>
-              Choose the writing style for your research reports. Different
-              styles are optimized for different audiences and purposes.
+              请选择你的研究报告写作风格，不同风格适合不同场景和受众。
             </p>
           </div>
         }
@@ -88,10 +87,9 @@ export function ReportStyleDialog() {
       </Tooltip>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Choose Writing Style</DialogTitle>
+          <DialogTitle>选择写作风格</DialogTitle>
           <DialogDescription>
-            Select the writing style for your research reports. Each style is
-            optimized for different audiences and purposes.
+            请选择你的研究报告写作风格。每种风格适合不同的受众和用途。
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-3 py-4">

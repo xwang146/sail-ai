@@ -141,6 +141,7 @@ function MessageListItem({
   if (message) {
     if (
       message.role === "user" ||
+      message.agent === "questioner" ||
       message.agent === "coordinator" ||
       message.agent === "planner" ||
       message.agent === "podcast" ||
@@ -547,6 +548,8 @@ function PlanCard({
     </div>
   );
 }
+
+
 
 function PodcastCard({
   className,
