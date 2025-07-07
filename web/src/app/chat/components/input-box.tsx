@@ -240,7 +240,7 @@ export function InputBox({
             </Tooltip>
           )}
 
-          <Tooltip
+          {/* <Tooltip
             className="max-w-60"
             title={
               <div>
@@ -265,11 +265,11 @@ export function InputBox({
             >
               <Detective /> 预调研
             </Button>
-          </Tooltip>
-          <ReportStyleDialog />
+          </Tooltip> */}
+          {/* <ReportStyleDialog /> */}
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Tooltip title="AI 优化提示词">
+          {/* <Tooltip title="AI 优化提示词">
             <Button
               variant="ghost"
               size="icon"
@@ -288,7 +288,7 @@ export function InputBox({
                 <MagicWandIcon className="text-brand" />
               )}
             </Button>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title={responding ? "停止" : "发送"}>
             <Button
               variant="outline"
