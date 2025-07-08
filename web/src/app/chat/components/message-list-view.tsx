@@ -414,7 +414,7 @@ function ThoughtBlock({
   );
 }
 
-const GREETINGS = ["Cool", "Sounds great", "Looks good", "Great", "Awesome"];
+const GREETINGS = ["好的！"];
 function PlanCard({
   className,
   message,
@@ -454,7 +454,7 @@ function PlanCard({
   const handleAccept = useCallback(async () => {
     if (onSendMessage) {
       onSendMessage(
-        `${GREETINGS[Math.floor(Math.random() * GREETINGS.length)]}! ${Math.random() > 0.5 ? "Let's get started." : "Let's start."}`,
+        `${GREETINGS[Math.floor(Math.random() * GREETINGS.length)]}! ${Math.random() > 0.5 ? "现在开始研究。" : "马上开始研究。"}`,
         {
           interruptFeedback: "accepted",
         },
