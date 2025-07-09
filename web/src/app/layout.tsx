@@ -4,7 +4,8 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import localFont from "next/font/local";
+// import { Geist } from "next/font/google";
 import Script from "next/script";
 
 import { ThemeProviderWrapper } from "~/components/deer-flow/theme-provider-wrapper";
@@ -19,8 +20,13 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
-  subsets: ["latin"],
+// const geist = Geist({
+//   subsets: ["latin"],
+//   variable: "--font-geist-sans",
+// });
+
+const geist = localFont({
+  src: "./fonts/Geist-Regular.woff2",
   variable: "--font-geist-sans",
 });
 
