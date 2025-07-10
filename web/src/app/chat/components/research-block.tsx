@@ -108,7 +108,7 @@ export function ResearchBlock({
         <div className="absolute right-4 flex h-9 items-center justify-center">
           {hasReport && !reportStreaming && (
             <>
-              <Tooltip title="Generate podcast">
+              {/* <Tooltip title="Generate podcast">
                 <Button
                   className="text-gray-400"
                   size="icon"
@@ -118,8 +118,8 @@ export function ResearchBlock({
                 >
                   <Headphones />
                 </Button>
-              </Tooltip>
-              <Tooltip title="Edit">
+              </Tooltip> */}
+              <Tooltip title="编辑">
                 <Button
                   className="text-gray-400"
                   size="icon"
@@ -130,7 +130,7 @@ export function ResearchBlock({
                   {editing ? <Undo2 /> : <Pencil />}
                 </Button>
               </Tooltip>
-              <Tooltip title="Copy">
+              <Tooltip title="复制">
                 <Button
                   className="text-gray-400"
                   size="icon"
@@ -140,7 +140,7 @@ export function ResearchBlock({
                   {copied ? <Check /> : <Copy />}
                 </Button>
               </Tooltip>
-              <Tooltip title="Download report as markdown">
+              <Tooltip title="下载报告">
                 <Button
                   className="text-gray-400"
                   size="icon"
@@ -152,7 +152,7 @@ export function ResearchBlock({
               </Tooltip>
             </>
           )}
-          <Tooltip title="Close">
+          <Tooltip title="关闭">
             <Button
               className="text-gray-400"
               size="sm"
@@ -177,10 +177,10 @@ export function ResearchBlock({
                 value="report"
                 disabled={!hasReport}
               >
-                Report
+                报告
               </TabsTrigger>
               <TabsTrigger className="px-8" value="activities">
-                Activities
+                调研过程
               </TabsTrigger>
             </TabsList>
           </div>

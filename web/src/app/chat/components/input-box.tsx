@@ -242,17 +242,15 @@ export function InputBox({
             </Tooltip>
           )}
 
-          <Tooltip
+          {/* <Tooltip
             className="max-w-60"
             title={
               <div>
                 <h3 className="mb-2 font-bold">
-                  Investigation Mode: {backgroundInvestigation ? "On" : "Off"}
+                  预调研模式：{backgroundInvestigation ? "开启" : "关闭"}
                 </h3>
                 <p>
-                  When enabled, DeerFlow will perform a quick search before
-                  planning. This is useful for researches related to ongoing
-                  events and news.
+                  启用后，DeerFlow 会在规划前进行快速检索，适合时事、新闻等相关研究。
                 </p>
               </div>
             }
@@ -267,13 +265,13 @@ export function InputBox({
                 setEnableBackgroundInvestigation(!backgroundInvestigation)
               }
             >
-              <Detective /> Investigation
+              <Detective /> 预调研
             </Button>
-          </Tooltip>
-          <ReportStyleDialog />
+          </Tooltip> */}
+          {/* <ReportStyleDialog /> */}
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Tooltip title="Enhance prompt with AI">
+          {/* <Tooltip title="AI 优化提示词">
             <Button
               variant="ghost"
               size="icon"
@@ -292,8 +290,8 @@ export function InputBox({
                 <MagicWandIcon className="text-brand" />
               )}
             </Button>
-          </Tooltip>
-          <Tooltip title={responding ? "Stop" : "Send"}>
+          </Tooltip> */}
+          <Tooltip title={responding ? "停止" : "发送"}>
             <Button
               variant="outline"
               size="icon"

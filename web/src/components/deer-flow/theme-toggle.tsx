@@ -22,7 +22,7 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
-      <Tooltip title="Change theme">
+      <Tooltip title="切换背景色">
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon">
             <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
@@ -38,7 +38,7 @@ export function ThemeToggle() {
               theme === "light" ? "font-bold" : "text-muted-foreground",
             )}
           >
-            Light
+            浅色
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
@@ -48,7 +48,7 @@ export function ThemeToggle() {
               theme === "dark" ? "font-bold" : "text-muted-foreground",
             )}
           >
-            Dark
+            深色
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
@@ -58,7 +58,7 @@ export function ThemeToggle() {
               theme === "system" ? "font-bold" : "text-muted-foreground",
             )}
           >
-            System
+            系统
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
