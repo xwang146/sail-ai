@@ -304,3 +304,16 @@ span[style] > strong {
 mark[style] > strong {
   color: inherit;
 }
+
+/* Hide placeholder when no content */
+.no-placeholder .ProseMirror .is-editor-empty:first-child::before {
+  display: none;
+}
+
+.no-placeholder .ProseMirror p.is-empty::before {
+  display: none;
+}
+
+.no-placeholder .placeholder {
+  display: none !important;
+}

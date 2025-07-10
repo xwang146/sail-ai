@@ -21,6 +21,7 @@ import {
   setEnableDeepThinking,
   setEnableBackgroundInvestigation,
   useSettingsStore,
+  useMessageIds,
 } from "~/core/store";
 import { cn } from "~/lib/utils";
 
@@ -31,6 +32,7 @@ export function InputBox({
   onSend,
   onCancel,
   onRemoveFeedback,
+  showPlaceholder = false,
 }: {
   className?: string;
   size?: "large" | "normal";
@@ -45,6 +47,7 @@ export function InputBox({
   ) => void;
   onCancel?: () => void;
   onRemoveFeedback?: () => void;
+  showPlaceholder?: boolean;
 }) {
   const enableDeepThinking = useSettingsStore(
     (state) => state.general.enableDeepThinking,
@@ -62,6 +65,9 @@ export function InputBox({
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isEnhanceAnimating, setIsEnhanceAnimating] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState("");
+
+  const messageIds = useMessageIds();
+  const messageCount = messageIds.length;
 
   const handleSendMessage = useCallback(
     (message: string, resources: Array<Resource>) => {
@@ -124,7 +130,7 @@ export function InputBox({
   return (
     <div
       className={cn(
-        "bg-card relative flex h-full w-full flex-col rounded-[24px] border",
+        "bg-card relative flex h-full w-full flex-col rounded-[24px] border max-w-3xl mx-auto",
         className,
       )}
       ref={containerRef}
@@ -207,6 +213,7 @@ export function InputBox({
           config={config}
           onEnter={handleSendMessage}
           onChange={setCurrentPrompt}
+          showPlaceholder={showPlaceholder}
         />
       </div>
       <div className="flex items-center px-4 py-2">

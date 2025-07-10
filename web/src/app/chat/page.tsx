@@ -19,7 +19,7 @@ const Main = dynamic(() => import("./main"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center">
-      Loading DeerFlow...
+      飞猫出海AI助手正在加载中...
     </div>
   ),
 });

@@ -23,6 +23,7 @@ import type { Resource } from "~/core/messages";
 import { useConfig } from "~/core/api/hooks";
 import { LoadingOutlined } from "@ant-design/icons";
 import type { DeerFlowConfig } from "~/core/config";
+import { cn } from "~/lib/utils";
 
 export interface MessageInputRef {
   focus: () => void;
@@ -37,6 +38,7 @@ export interface MessageInputProps {
   config?: DeerFlowConfig | null;
   onChange?: (markdown: string) => void;
   onEnter?: (message: string, resources: Array<Resource>) => void;
+  showPlaceholder?: boolean;
 }
 
 function formatMessage(content: JSONContent) {
@@ -79,7 +81,7 @@ function formatItem(item: JSONContent): {
 
 const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
   (
-    { className, loading, config, onChange, onEnter }: MessageInputProps,
+    { className, loading, config, onChange, onEnter, showPlaceholder = false }: MessageInputProps,
     ref,
   ) => {
     const editorRef = useRef<Editor>(null);
@@ -121,6 +123,21 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
       handleEnterRef.current = onEnter;
     }, [onEnter]);
 
+    // 动态更新占位符
+    useEffect(() => {
+      if (editorRef.current) {
+        const placeholderText = showPlaceholder 
+          ? (config?.rag.provider
+              ? "请点击上方按钮或打字输入你想出海的国家或地区\n你可以通过 @ 引用知识库资源。"
+              : "请点击上方按钮或打字输入你想出海的国家或地区")
+          : "";
+        
+        // 更新占位符
+        editorRef.current.commands.focus();
+        editorRef.current.commands.blur();
+      }
+    }, [showPlaceholder, config?.rag.provider]);
+
     const extensions = useMemo(() => {
       const extensions = [
         StarterKit,
@@ -136,9 +153,11 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
         }),
         Placeholder.configure({
           showOnlyCurrent: false,
-          placeholder: config?.rag.provider
-            ? "我能帮你做什么？\n你可以通过 @ 引用知识库资源。"
-            : "我能帮你做什么？",
+          placeholder: showPlaceholder 
+            ? (config?.rag.provider
+                ? "请点击上方按钮或打字输入你想出海的国家或地区\n你可以通过 @ 引用知识库资源。"
+                : "请点击上方按钮或打字输入你想出海的国家或地区")
+            : "",
           emptyEditorClass: "placeholder",
         }),
         Extension.create({
@@ -169,7 +188,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
         );
       }
       return extensions;
-    }, [config]);
+    }, [config, showPlaceholder]);
 
     if (loading) {
       return (
@@ -185,11 +204,16 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
           <EditorContent
             immediatelyRender={false}
             extensions={extensions}
-            className="border-muted h-full w-full overflow-auto"
+            className={cn(
+              "border-muted h-full w-full overflow-auto",
+              !showPlaceholder && "no-placeholder"
+            )}
             editorProps={{
               attributes: {
-                class:
+                class: cn(
                   "prose prose-base dark:prose-invert inline-editor font-default focus:outline-none max-w-full",
+                  !showPlaceholder && "no-placeholder"
+                ),
               },
               transformPastedHTML: transformPastedHTML,
             }}

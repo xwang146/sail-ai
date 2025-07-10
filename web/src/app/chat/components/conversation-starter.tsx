@@ -8,11 +8,11 @@ import { cn } from "~/lib/utils";
 import { Welcome } from "./welcome";
 
 const questions = [
-  "我想把我的零食品牌带去马来西亚",
-  "我想去泰国开奶茶店",
-  "我想去菲律宾开一家甜品店",
-  "我打算在印尼开连锁咖啡馆",
+  "马来西亚", "泰国", "印尼",
+  "越南", "欧洲", "美国",
+  "新加坡", "日本", "澳大利亚"
 ];
+
 export function ConversationStarter({
   className,
   onSend,
@@ -25,11 +25,11 @@ export function ConversationStarter({
       <div className="pointer-events-none fixed inset-0 flex items-center justify-center">
         <Welcome className="pointer-events-auto mb-15 w-[75%] -translate-y-24" />
       </div>
-      <ul className="flex flex-wrap">
+      <ul className="flex flex-wrap mt-[-48px] ml-24">
         {questions.map((question, index) => (
           <motion.li
             key={question}
-            className="flex w-1/2 shrink-0 p-2 active:scale-105"
+            className="flex w-1/3 shrink-0 p-2 active:scale-105"
             style={{ transition: "all 0.2s ease-out" }}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

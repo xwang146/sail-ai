@@ -35,6 +35,9 @@ export function MessagesBlock({ className }: { className?: string }) {
   const [replayStarted, setReplayStarted] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
+  
+  const shouldShowPlaceholder = !responding && messageCount === 0;
+  
   const handleSend = useCallback(
     async (
       message: string,
@@ -105,6 +108,7 @@ export function MessagesBlock({ className }: { className?: string }) {
             onSend={handleSend}
             onCancel={handleCancel}
             onRemoveFeedback={handleRemoveFeedback}
+            showPlaceholder={shouldShowPlaceholder}
           />
         </div>
       ) : (
