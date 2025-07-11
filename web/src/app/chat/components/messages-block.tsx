@@ -109,6 +109,7 @@ export function MessagesBlock({ className }: { className?: string }) {
             onCancel={handleCancel}
             onRemoveFeedback={handleRemoveFeedback}
             showPlaceholder={shouldShowPlaceholder}
+            placeholder={"What can I do for you?"}
           />
         </div>
       ) : (

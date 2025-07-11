@@ -81,7 +81,7 @@ function formatItem(item: JSONContent): {
 
 const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
   (
-    { className, loading, config, onChange, onEnter, showPlaceholder = false }: MessageInputProps,
+    { className, loading, config, onChange, onEnter, showPlaceholder = true, placeholder }: MessageInputProps,
     ref,
   ) => {
     const editorRef = useRef<Editor>(null);
@@ -126,12 +126,6 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
     // 动态更新占位符
     useEffect(() => {
       if (editorRef.current) {
-        const placeholderText = showPlaceholder 
-          ? (config?.rag.provider
-              ? "请点击上方按钮或打字输入你想出海的国家或地区\n你可以通过 @ 引用知识库资源。"
-              : "请点击上方按钮或打字输入你想出海的国家或地区")
-          : "";
-        
         // 更新占位符
         editorRef.current.commands.focus();
         editorRef.current.commands.blur();
@@ -139,7 +133,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
     }, [showPlaceholder, config?.rag.provider]);
 
     const extensions = useMemo(() => {
-      const extensions = [
+      const extensions: Extension<any, any>[] = [
         StarterKit,
         Markdown.configure({
           html: true,
@@ -151,15 +145,18 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
           transformPastedText: false,
           transformCopiedText: false,
         }),
-        Placeholder.configure({
-          showOnlyCurrent: false,
-          placeholder: showPlaceholder 
-            ? (config?.rag.provider
-                ? "请点击上方按钮或打字输入你想出海的国家或地区\n你可以通过 @ 引用知识库资源。"
-                : "请点击上方按钮或打字输入你想出海的国家或地区")
-            : "",
-          emptyEditorClass: "placeholder",
-        }),
+      ];
+      // 只有 placeholder 有内容时才加载 Placeholder 插件
+      if (placeholder && placeholder.trim() !== "") {
+        extensions.push(
+          Placeholder.configure({
+            showOnlyCurrent: false,
+            placeholder,
+            emptyEditorClass: "placeholder",
+          })
+        );
+      }
+      extensions.push(
         Extension.create({
           name: "keyboardHandler",
           addKeyboardShortcuts() {
@@ -175,8 +172,8 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
               },
             };
           },
-        }),
-      ];
+        })
+      );
       if (config?.rag.provider) {
         extensions.push(
           Mention.configure({
@@ -188,8 +185,8 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
         );
       }
       return extensions;
-    }, [config, showPlaceholder]);
-
+    }, [config, showPlaceholder, placeholder]);
+    console.log("Placeholder used:", placeholder || "请输入");
     if (loading) {
       return (
         <div className={className}>
