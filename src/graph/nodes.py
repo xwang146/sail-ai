@@ -86,6 +86,13 @@ def planner_node(
     configurable = Configuration.from_runnable_config(config)
     plan_iterations = state["plan_iterations"] if state.get("plan_iterations", 0) else 0
     messages = apply_prompt_template("planner", state, configurable)
+     
+    research_topic = state.get("research_topic", "")
+    logger.info(f"********Research topic: {research_topic}")
+    if research_topic:
+        messages.append(HumanMessage( 
+            content=f"The research topic is: {research_topic}",
+            name="system"))
 
     if state.get("enable_background_investigation") and state.get(
         "background_investigation_results"
