@@ -100,6 +100,10 @@ cp conf.yaml.example conf.yaml
 # Install marp for ppt generation
 # https://github.com/marp-team/marp-cli?tab=readme-ov-file#use-package-manager
 brew install marp-cli
+
+# Install pandoc for Word document conversion (optional)
+# This enables downloading reports as Word documents instead of Markdown
+./install_pandoc.sh
 ```
 
 Optionally, install web UI dependencies via [pnpm](https://pnpm.io/installation):
@@ -219,6 +223,11 @@ SEARCH_API=tavily
   - Supports Notion-like block editing
   - Allows AI refinements, including AI-assisted polishing, sentence shortening, and expansion
   - Powered by [tiptap](https://tiptap.dev/)
+
+- 📄 **Document Export**
+  - Download research reports as Word documents (`.docx`) using Pandoc
+  - Automatic fallback to Markdown format if Pandoc is not available
+  - Maintains formatting, tables, and images in the exported documents
 
 ### Content Creation
 

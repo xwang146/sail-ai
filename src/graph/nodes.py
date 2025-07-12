@@ -186,6 +186,8 @@ def planner_node(
             name="system"))
     elif current_report_type == ReportType.FINANCE:
         messages = apply_prompt_template("planner_finance", state)
+    else:
+        messages = apply_prompt_template("planner_market", state)
      
     research_topic = state.get("research_topic", "")
     logger.info(f"********Research topic: {research_topic}")
@@ -384,14 +386,14 @@ def reporter_node(state: State, config: RunnableConfig):
     logger.info("Reporter write final report")
     configurable = Configuration.from_runnable_config(config)
     current_plan = state.get("current_plan")
-    input_ = {
-        "messages": [
-            HumanMessage(
-                f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
-            )
-        ],
-        "locale": state.get("locale", "zh-CN"),
-    }
+    # input_ = {
+    #     "messages": [
+    #         HumanMessage(
+    #             f"# Research Requirements\n\n## Task\n\n{current_plan.title}\n\n## Description\n\n{current_plan.thought}"
+    #         )
+    #     ],
+    #     "locale": state.get("locale", "zh-CN"),
+    # }
 
     current_report_type = state.get("current_report_type", ReportType.MARKET)
     if current_report_type == ReportType.MARKET:

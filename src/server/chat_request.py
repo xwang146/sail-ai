@@ -107,3 +107,7 @@ class EnhancePromptRequest(BaseModel):
     report_style: Optional[str] = Field(
         "academic", description="The style of the report"
     )
+
+
+class MarkdownToWordRequest(BaseModel):
+    markdown: str = Field(..., description="The markdown content to convert to Word document")

@@ -9,6 +9,7 @@ import { Tooltip } from "~/components/deer-flow/tooltip";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { resolveServiceURL } from "~/core/api/resolve-service-url";
 import { useReplay } from "~/core/replay";
 import { closeResearch, listenToPodcast, useStore } from "~/core/store";
 import { cn } from "~/lib/utils";
@@ -64,8 +65,8 @@ export function ResearchBlock({
     }, 1000);
   }, [reportId]);
 
-  // Download report as markdown
-  const handleDownload = useCallback(() => {
+  // Download report as Word document using Pandoc
+  const handleDownload = useCallback(async () => {
     if (!reportId) {
       return;
     }
@@ -73,21 +74,66 @@ export function ResearchBlock({
     if (!report) {
       return;
     }
-    const now = new Date();
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
-    const filename = `research-report-${timestamp}.md`;
-    const blob = new Blob([report.content], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 0);
+    
+    try {
+      const now = new Date();
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+      const filename = `research-report-${timestamp}.docx`;
+      
+      // Call backend API to convert markdown to Word document
+      const response = await fetch(resolveServiceURL('convert/markdown-to-word'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          markdown: report.content,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to convert markdown to Word document: ${response.status} ${response.statusText} - ${errorText}`);
+      }
+      
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+      
+
+    } catch (error) {
+      console.error('Error downloading Word document:', error);
+      
+      // Log error message for debugging
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.log(`Word 文档转换失败: ${errorMessage}`);
+      
+      // Fallback to markdown download if conversion fails
+      const now = new Date();
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+      const filename = `research-report-${timestamp}.md`;
+      const blob = new Blob([report.content], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+    }
   }, [reportId]);
 
     

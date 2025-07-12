@@ -31,6 +31,7 @@ from src.server.chat_request import (
     GeneratePPTRequest,
     GenerateProseRequest,
     TTSRequest,
+    MarkdownToWordRequest,
 )
 from src.server.mcp_request import MCPServerMetadataRequest, MCPServerMetadataResponse
 from src.server.mcp_utils import load_mcp_tools
@@ -429,3 +430,61 @@ async def config():
         rag=RAGConfigResponse(provider=SELECTED_RAG_PROVIDER),
         models=get_configured_llm_models(),
     )
+
+
+@app.post("/api/convert/markdown-to-word")
+async def convert_markdown_to_word(request: MarkdownToWordRequest):
+    """Convert markdown content to Word document using Pandoc."""
+    try:
+        import subprocess
+        import tempfile
+        import os
+        
+        # Create temporary files for input and output
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as md_file:
+            md_file.write(request.markdown)
+            md_input_path = md_file.name
+        
+        with tempfile.NamedTemporaryFile(suffix='.docx', delete=False) as docx_file:
+            docx_output_path = docx_file.name
+        
+        try:
+            # Use pandoc to convert markdown to Word document
+            result = subprocess.run([
+                'pandoc',
+                md_input_path,
+                '-o', docx_output_path,
+                '--from', 'markdown',
+                '--to', 'docx',
+                '--standalone'
+            ], capture_output=True, text=True, check=True)
+            
+            # Read the generated Word document
+            with open(docx_output_path, 'rb') as f:
+                docx_content = f.read()
+            
+            # Return the Word document
+            return Response(
+                content=docx_content,
+                media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                headers={
+                    "Content-Disposition": "attachment; filename=research-report.docx"
+                }
+            )
+            
+        finally:
+            # Clean up temporary files
+            if os.path.exists(md_input_path):
+                os.unlink(md_input_path)
+            if os.path.exists(docx_output_path):
+                os.unlink(docx_output_path)
+                
+    except subprocess.CalledProcessError as e:
+        logger.exception(f"Pandoc conversion failed: {e.stderr}")
+        raise HTTPException(status_code=500, detail="Failed to convert markdown to Word document")
+    except FileNotFoundError:
+        logger.exception("Pandoc not found. Please install pandoc.")
+        raise HTTPException(status_code=500, detail="Pandoc not installed. Please install pandoc to convert to Word documents.")
+    except Exception as e:
+        logger.exception(f"Error occurred during markdown to Word conversion: {str(e)}")
+        raise HTTPException(status_code=500, detail=INTERNAL_SERVER_ERROR_DETAIL)

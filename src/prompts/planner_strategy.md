@@ -62,7 +62,7 @@ Different types of steps have different web search requirements:
 
 ## Execution Rules
 - To begin with, repeat user's requirement in your own words as `thought`.
-- Set `has_enough_context` to true
+- Set `has_enough_context` to false
 - Break down the required information using the Analysis Framework
   - Create exactly 3 steps
   - For each step, set `need_search: true` and `step_type: research`
