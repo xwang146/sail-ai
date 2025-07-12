@@ -51,6 +51,9 @@ export function ConversationStarter({
           </motion.li>
         ))}
       </ul>
+      <div className="text-muted-foreground text-center text-sm mt-4">
+        请在上方选择或者打字告诉我您想出海的国家/地区
+      </div>
     </div>
   );
 }

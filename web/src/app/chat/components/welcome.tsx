@@ -18,8 +18,7 @@ export function Welcome({ className }: { className?: string }) {
         👋 老板你好！我是飞猫出海AI助手
       </h3>
       <div className="text-muted-foreground px-4 text-center text-lg">
-        很高兴能为您服务！我是基于前沿AI技术的出海战略规划助手，让我来帮你探索海外市场的无限可能吧！<br/><br/>
-        {/* 请在下方选择您想出海的国家，或者直接在输入框里输入 */}
+        很高兴能为您服务！我是基于前沿AI技术的出海战略规划助手，让我来帮你探索海外市场的无限可能吧！
       </div>
     </motion.div>
     </div>

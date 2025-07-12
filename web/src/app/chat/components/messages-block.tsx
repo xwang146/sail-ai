@@ -36,7 +36,7 @@ export function MessagesBlock({ className }: { className?: string }) {
   const abortControllerRef = useRef<AbortController | null>(null);
   const [feedback, setFeedback] = useState<{ option: Option } | null>(null);
   
-  const shouldShowPlaceholder = !responding && messageCount === 0;
+
   
   const handleSend = useCallback(
     async (
@@ -108,8 +108,8 @@ export function MessagesBlock({ className }: { className?: string }) {
             onSend={handleSend}
             onCancel={handleCancel}
             onRemoveFeedback={handleRemoveFeedback}
-            showPlaceholder={shouldShowPlaceholder}
-            placeholder={"What can I do for you?"}
+
+
           />
         </div>
       ) : (

@@ -32,8 +32,7 @@ export function InputBox({
   onSend,
   onCancel,
   onRemoveFeedback,
-  showPlaceholder = false,
-  placeholder, // 新增 placeholder props
+
 }: {
   className?: string;
   size?: "large" | "normal";
@@ -48,8 +47,7 @@ export function InputBox({
   ) => void;
   onCancel?: () => void;
   onRemoveFeedback?: () => void;
-  showPlaceholder?: boolean;
-  placeholder?: string; // 新增 placeholder props 类型
+
 }) {
   const enableDeepThinking = useSettingsStore(
     (state) => state.general.enableDeepThinking,
@@ -215,8 +213,8 @@ export function InputBox({
           config={config}
           onEnter={handleSendMessage}
           onChange={setCurrentPrompt}
-          showPlaceholder={showPlaceholder}
-          placeholder={placeholder} // 传递 placeholder
+
+
         />
       </div>
       <div className="flex items-center px-4 py-2">

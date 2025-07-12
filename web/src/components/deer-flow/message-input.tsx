@@ -33,7 +33,6 @@ export interface MessageInputRef {
 
 export interface MessageInputProps {
   className?: string;
-  placeholder?: string;
   loading?: boolean;
   config?: DeerFlowConfig | null;
   onChange?: (markdown: string) => void;
@@ -81,7 +80,7 @@ function formatItem(item: JSONContent): {
 
 const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
   (
-    { className, loading, config, onChange, onEnter, showPlaceholder = true, placeholder }: MessageInputProps,
+    { className, loading, config, onChange, onEnter, showPlaceholder = true }: MessageInputProps,
     ref,
   ) => {
     const editorRef = useRef<Editor>(null);
@@ -124,13 +123,13 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
     }, [onEnter]);
 
     // 动态更新占位符
-    useEffect(() => {
-      if (editorRef.current) {
-        // 更新占位符
-        editorRef.current.commands.focus();
-        editorRef.current.commands.blur();
-      }
-    }, [showPlaceholder, config?.rag.provider]);
+    // useEffect(() => {
+    //   if (editorRef.current) {
+    //     // 更新占位符
+    //     editorRef.current.commands.focus();
+    //     editorRef.current.commands.blur();
+    //   }
+    // }, [showPlaceholder, config?.rag.provider]);
 
     const extensions = useMemo(() => {
       const extensions: Extension<any, any>[] = [
@@ -146,16 +145,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
           transformCopiedText: false,
         }),
       ];
-      // 只有 placeholder 有内容时才加载 Placeholder 插件
-      if (placeholder && placeholder.trim() !== "") {
-        extensions.push(
-          Placeholder.configure({
-            showOnlyCurrent: false,
-            placeholder,
-            emptyEditorClass: "placeholder",
-          })
-        );
-      }
+
       extensions.push(
         Extension.create({
           name: "keyboardHandler",
@@ -185,8 +175,7 @@ const MessageInput = forwardRef<MessageInputRef, MessageInputProps>(
         );
       }
       return extensions;
-    }, [config, showPlaceholder, placeholder]);
-    console.log("Placeholder used:", placeholder || "请输入");
+    }, [config, showPlaceholder]);
     if (loading) {
       return (
         <div className={className}>
