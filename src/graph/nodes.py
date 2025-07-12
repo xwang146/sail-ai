@@ -4,9 +4,10 @@
 import json
 import logging
 import os
+from src.graph.types import ReportType
 from typing import Annotated, Literal
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.types import Command, interrupt
@@ -33,6 +34,93 @@ from ..config import SELECTED_SEARCH_ENGINE, SearchEngine
 
 logger = logging.getLogger(__name__)
 
+
+# def read_user_config_message_and_update_state(state: State) -> State:
+#     """
+#     Read user configuration from messages list.
+#     Since the config message is always at the first position, we can access it directly.
+    
+#     Args:
+#         state: Current state containing messages
+        
+#     Returns:
+#         Dictionary containing user configuration, or empty dict if not found
+#     """
+#     messages = state.get("messages", [])
+#     if messages and hasattr(messages[0], 'name') and messages[0].name == "user_config":
+#         try:
+#             # Extract JSON from message content
+#             content = messages[0].content if hasattr(messages[0], 'content') else ""
+#             # Handle case where content might be a list
+#             if isinstance(content, list):
+#                 content = " ".join(str(item) for item in content)
+#             elif not isinstance(content, str):
+#                 content = str(content)
+            
+#             if "User configuration stored in JSON format:" in content:
+#                 json_str = content.split("User configuration stored in JSON format: ")[1]
+#                 user_config = json.loads(json_str)
+#                 logger.info(f"Read user config from messages: {user_config}")
+#                 # Update state with extracted config
+#                 state["company_business"] = user_config.get("company_business", "")
+#                 state["overseas_area"] = user_config.get("overseas_area", "")
+#                 research_type_str = user_config.get("last_research_type", "other")
+#                 state["last_research_type"] = ReportType(research_type_str)
+#                 return state
+                
+#         except (json.JSONDecodeError, KeyError) as e:
+#             logger.warning(f"Failed to parse user config from messages: {e}")
+    
+#     logger.info("No user config message found in messages")
+#     return state
+
+
+# def update_user_config_message(state: State) -> list:
+#     """
+#     Update user configuration message in the messages list.
+#     Since the config message is always at the first position, we can update it directly.
+    
+#     Args:
+#         state: Current state containing user configuration
+        
+#     Returns:
+#         Updated messages list with the latest user config
+#     """
+#     messages = state.get("messages", [])
+    
+#     # Create updated user config JSON
+#     user_config = {
+#         "company_business": state.get("company_business", ""),
+#         "overseas_area": state.get("overseas_area", ""),
+#         "last_research_type": state.get("last_research_type", ReportType.OTHER).value
+#     }
+    
+#     # Create updated config message
+#     config_system_message = SystemMessage(
+#         content=f"User configuration stored in JSON format: {json.dumps(user_config, ensure_ascii=False)}",
+#         name="user_config"
+#     )
+    
+#     # Update the first message if it's a config message, otherwise insert at the beginning
+#     if messages and hasattr(messages[0], 'name') and messages[0].name == "user_config":
+#         messages[0] = config_system_message
+#     else:
+#         messages.insert(0, config_system_message)
+    
+#     logger.info(f"Updated user config message: {user_config}")
+#     return messages
+
+# def update_user_config_message_and_goto_end(state: State) -> Command[Literal("__end__")]:
+#     """
+#     Update user configuration message in the messages list and go to __end__
+#     """
+#     updated_messages = update_user_config_message(state)
+#     return Command(
+#         update={
+#             "messages": updated_messages,
+#         },
+#         goto="__end__"
+#     )
 
 @tool
 def handoff_to_planner(
@@ -85,7 +173,19 @@ def planner_node(
     logger.info("Planner generating full plan")
     configurable = Configuration.from_runnable_config(config)
     plan_iterations = state["plan_iterations"] if state.get("plan_iterations", 0) else 0
-    messages = apply_prompt_template("planner", state, configurable)
+
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    if current_report_type == ReportType.MARKET:
+        messages = apply_prompt_template("planner_market", state)
+    elif current_report_type == ReportType.STRATEGY:
+        messages = apply_prompt_template("planner_strategy", state)
+    elif current_report_type == ReportType.EXECUTION:
+        messages = apply_prompt_template("planner_execution", state)
+        messages.append(HumanMessage(
+            content=f"You need to design the execution plan based on the previous strategy report: {state.get('final_report', '')} and the company staff structure",
+            name="system"))
+    elif current_report_type == ReportType.FINANCE:
+        messages = apply_prompt_template("planner_finance", state)
      
     research_topic = state.get("research_topic", "")
     logger.info(f"********Research topic: {research_topic}")
@@ -217,14 +317,30 @@ def coordinator_node(
 ) -> Command[Literal["planner", "background_investigator", "__end__"]]:
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
+
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    logging.info(f"********Current report type: {current_report_type}")
+    logging.info(f"********Current State: {state}")
+    if current_report_type == ReportType.MARKET:
+        messages = apply_prompt_template("coordinator_market", state)
+    elif current_report_type == ReportType.STRATEGY:
+        messages = apply_prompt_template("coordinator_strategy", state)
+    elif current_report_type == ReportType.EXECUTION:
+        messages = apply_prompt_template("coordinator_execution", state)
+    elif current_report_type == ReportType.FINANCE:
+        messages = apply_prompt_template("coordinator_finance", state)
+    else:
+        messages = apply_prompt_template("coordinator_market", state)
+
     configurable = Configuration.from_runnable_config(config)
-    messages = apply_prompt_template("coordinator", state)
     response = (
         get_llm_by_type(AGENT_LLM_MAP["coordinator"])
         .bind_tools([handoff_to_planner])
         .invoke(messages)
     )
     logger.debug(f"Current state messages: {state['messages']}")
+
+    logger.info(f"********After coordinator: Current state: {state}")
 
     goto = "__end__"
     locale = state.get("locale", "zh-CN")  # Default locale if not specified
@@ -276,13 +392,28 @@ def reporter_node(state: State, config: RunnableConfig):
         ],
         "locale": state.get("locale", "zh-CN"),
     }
-    invoke_messages = apply_prompt_template("reporter", input_, configurable)
+
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    if current_report_type == ReportType.MARKET:
+        invoke_messages = apply_prompt_template("reporter_market", state)
+    elif current_report_type == ReportType.STRATEGY:
+        invoke_messages = apply_prompt_template("reporter_strategy", state)
+    elif current_report_type == ReportType.EXECUTION:
+        invoke_messages = apply_prompt_template("reporter_execution", state)
+        invoke_messages.append(HumanMessage(
+            content=f"IMPORTANT: The original strategy table should be kept the exact same as the previous strategy report, you need to add the execution plan (2 extra columns to the right of the table). Here's the original strategy table: {state.get('final_report', '')}",
+            name="system"))
+    elif current_report_type == ReportType.FINANCE:
+        invoke_messages = apply_prompt_template("reporter_finance", state)
+    else:
+        invoke_messages = apply_prompt_template("reporter_market", state)
+    
     observations = state.get("observations", [])
 
     # Add a reminder about the new report format, citation style, and table usage
     invoke_messages.append(
         HumanMessage(
-            content="IMPORTANT: Structure your report according to the format in the prompt. Remember to include:\n\n1. Key Points - A bulleted list of the most important findings\n2. Overview - A brief introduction to the topic\n3. Detailed Analysis - Organized into logical sections\n4. Survey Note (optional) - For more comprehensive reports\n5. Key Citations - List all references at the end\n\nFor citations, DO NOT include inline citations in the text. Instead, place all citations in the 'Key Citations' section at the end using the format: `- [Source Title](URL)`. Include an empty line between each citation for better readability.\n\nPRIORITIZE USING MARKDOWN TABLES for data presentation and comparison. Use tables whenever presenting comparative data, statistics, features, or options. Structure tables with clear headers and aligned columns. Example table format:\n\n| Feature | Description | Pros | Cons |\n|---------|-------------|------|------|\n| Feature 1 | Description 1 | Pros 1 | Cons 1 |\n| Feature 2 | Description 2 | Pros 2 | Cons 2 |",
+            content="IMPORTANT: Structure your report according to the format in the prompt. ",
             name="system",
         )
     )
@@ -299,7 +430,25 @@ def reporter_node(state: State, config: RunnableConfig):
     response_content = response.content
     logger.info(f"reporter response: {response_content}")
 
-    return {"final_report": response_content}
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    # Determine the next report type
+    next_report_type = current_report_type
+    if current_report_type == ReportType.MARKET:
+        next_report_type = ReportType.STRATEGY
+    elif current_report_type == ReportType.STRATEGY:
+        next_report_type = ReportType.EXECUTION
+    elif current_report_type == ReportType.EXECUTION:
+        next_report_type = ReportType.FINANCE
+    elif current_report_type == ReportType.FINANCE:
+        next_report_type = ReportType.FINISHED
+    else:
+        next_report_type = ReportType.MARKET
+    
+    # Return both the final report and the updated report type
+    return {
+        "final_report": response_content,
+        "current_report_type": next_report_type
+    }
 
 
 def research_team_node(state: State):

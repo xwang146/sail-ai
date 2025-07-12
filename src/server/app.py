@@ -11,9 +11,10 @@ from uuid import uuid4
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
-from langchain_core.messages import AIMessageChunk, ToolMessage, BaseMessage
+from langchain_core.messages import AIMessageChunk, ToolMessage, BaseMessage, SystemMessage
 from langgraph.types import Command
 
+from src.graph.types import ReportType
 from src.config.report_style import ReportStyle
 from src.config.tools import SELECTED_RAG_PROVIDER
 from src.graph.builder import build_graph_with_memory
@@ -102,6 +103,20 @@ async def _astream_workflow_generator(
     report_style: ReportStyle,
     enable_deep_thinking: bool,
 ):
+    # Add global config message to the beginning of messages if it doesn't exist
+    # if not any(msg.get("name") == "user_config" for msg in messages):
+    #     logger.info("Server started with default user config message initialized")
+    #     # Initialize default user config message at server startup
+    #     default_user_config = {
+    #         "company_business": "",
+    #         "overseas_area": "",
+    #         "last_research_type": ReportType.OTHER
+    #     }
+    #     messages.insert(0, SystemMessage(
+    #         content=f"User configuration stored in JSON format: {json.dumps(default_user_config, ensure_ascii=False)}",
+    #         name="user_config"
+    #     ))
+    
     input_ = {
         "messages": messages,
         "plan_iterations": 0,
@@ -110,7 +125,7 @@ async def _astream_workflow_generator(
         "observations": [],
         "auto_accepted_plan": auto_accepted_plan,
         "enable_background_investigation": enable_background_investigation,
-        "research_topic": messages[-1]["content"] if messages else "",
+        "research_topic": "",
     }
     if not auto_accepted_plan and interrupt_feedback:
         resume_msg = f"[{interrupt_feedback}]"
@@ -144,7 +159,7 @@ async def _astream_workflow_generator(
                         "content": event_data["__interrupt__"][0].value,
                         "finish_reason": "interrupt",
                         "options": [
-                            {"text": "编辑计划", "value": "edit_plan"},
+                            {"text": "修改计划", "value": "edit_plan"},
                             {"text": "开始调研", "value": "accepted"},
                         ],
                     },

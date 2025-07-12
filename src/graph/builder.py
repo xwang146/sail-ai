@@ -4,6 +4,7 @@
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 from src.prompts.planner_model import StepType
+from src.graph.types import ReportType
 
 from .types import State
 from .nodes import (
@@ -33,6 +34,11 @@ def continue_to_running_research_team(state: State):
         return "coder"
     return "planner"
 
+def continue_to_research(state: State):
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    if current_report_type == ReportType.FINISHED:
+        return END
+    return "coordinator"
 
 def _build_base_graph():
     """Build and return the base state graph with all nodes and edges."""
@@ -52,7 +58,7 @@ def _build_base_graph():
         continue_to_running_research_team,
         ["planner", "researcher", "coder"],
     )
-    builder.add_edge("reporter", END)
+    builder.add_conditional_edges("reporter", continue_to_research, ["coordinator", END])
     return builder
 
 

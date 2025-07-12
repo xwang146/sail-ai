@@ -4,6 +4,7 @@
 import asyncio
 import logging
 from src.graph import build_graph
+from src.graph.types import ReportType
 
 # Configure logging
 logging.basicConfig(
@@ -14,7 +15,7 @@ logging.basicConfig(
 
 def enable_debug_logging():
     """Enable debug level logging for more detailed execution information."""
-    logging.getLogger("src").setLevel(logging.DEBUG)
+    logging.getLogger("src").setLevel(logging.INFO)
 
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,9 @@ async def run_agent_workflow_async(
         "messages": [{"role": "user", "content": user_input}],
         "auto_accepted_plan": True,
         "enable_background_investigation": enable_background_investigation,
+        # "last_research_type": ReportType.OTHER,
+        # "company_business": "",
+        # "overseas_area": "",
     }
     config = {
         "configurable": {
