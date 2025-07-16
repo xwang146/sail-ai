@@ -335,11 +335,22 @@ def coordinator_node(
         messages = apply_prompt_template("coordinator_market", state)
 
     configurable = Configuration.from_runnable_config(config)
-    response = (
-        get_llm_by_type(AGENT_LLM_MAP["coordinator"])
-        .bind_tools([handoff_to_planner])
-        .invoke(messages)
-    )
+    if current_report_type == ReportType.FINANCE:
+        response = (
+            get_llm_by_type(AGENT_LLM_MAP["coordinator"])
+            .invoke(messages)
+        )
+        logger.debug(f"Current state messages: {state['messages']}")
+        logger.info(f"********After coordinator: stay in the current node")
+        # update state but don't go to any node
+        return {}
+
+    else:
+        response = (
+            get_llm_by_type(AGENT_LLM_MAP["coordinator"])
+            .bind_tools([handoff_to_planner])
+            .invoke(messages)
+        )
     logger.debug(f"Current state messages: {state['messages']}")
 
     logger.info(f"********After coordinator: Current state: {state}")
@@ -370,6 +381,8 @@ def coordinator_node(
             "Coordinator response contains no tool calls. Terminating workflow execution."
         )
         logger.debug(f"Coordinator response: {response}")
+     
+    logging.info(f"********After coordinator: goto: {goto}")
 
     return Command(
         update={
@@ -442,7 +455,7 @@ def reporter_node(state: State, config: RunnableConfig):
     elif current_report_type == ReportType.EXECUTION:
         next_report_type = ReportType.FINANCE
     elif current_report_type == ReportType.FINANCE:
-        next_report_type = ReportType.FINISHED
+        next_report_type = ReportType.FINANCE
     else:
         next_report_type = ReportType.MARKET
     
@@ -636,7 +649,9 @@ async def researcher_node(
     """Researcher node that do research"""
     logger.info("Researcher node is researching.")
     configurable = Configuration.from_runnable_config(config)
-    tools = [get_web_search_tool(configurable.max_search_results), crawl_tool]
+    current_report_type = state.get("current_report_type", ReportType.MARKET)
+    include_images = False
+    tools = [get_web_search_tool(configurable.max_search_results, include_images=include_images), crawl_tool]
     retriever_tool = get_retriever_tool(state.get("resources", []))
     if retriever_tool:
         tools.insert(0, retriever_tool)

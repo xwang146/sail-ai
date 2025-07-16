@@ -48,3 +48,14 @@ export const env = createEnv({
    */
   emptyStringAsUndefined: true,
 });
+
+// Add build-time logging for debugging
+if (typeof window !== 'undefined') {
+  console.log('[env.js] Environment variables loaded:', {
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STATIC_WEBSITE_ONLY: process.env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY,
+    AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY ? '***' : undefined,
+    GITHUB_OAUTH_TOKEN: process.env.GITHUB_OAUTH_TOKEN ? '***' : undefined,
+  });
+}

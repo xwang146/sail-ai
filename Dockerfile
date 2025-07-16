@@ -1,7 +1,7 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 # Add build dependencies.
-RUN apt-get update && apt-get install -y gcc
+RUN apt-get update && apt-get install -y gcc && apt-get install -y pandoc
 
 # Install uv.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv

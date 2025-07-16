@@ -10,7 +10,7 @@ import { Welcome } from "./welcome";
 const questions = [
   "🇲🇾 马来西亚", "🇹🇭 泰国", "🇮🇩 印尼",
   "🇻🇳 越南", "🇪🇺 欧洲", "🇺🇸 美国",
-  "🇸🇬 新加坡", "🇯🇵 日本", "🇦🇺 澳大利亚"
+  "🇸🇬 新加坡", "🇯🇵 日本", "🇵🇭 菲律宾"
 ];
 
 export function ConversationStarter({

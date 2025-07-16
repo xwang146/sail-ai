@@ -52,18 +52,36 @@ export function useConfig(): {
   const [config, setConfig] = useState<DeerFlowConfig | null>(null);
 
   useEffect(() => {
+    // Add production logging
+    if (typeof window !== 'undefined') {
+      console.log('[useConfig] Environment check:', {
+        NEXT_PUBLIC_STATIC_WEBSITE_ONLY: env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY,
+        NEXT_PUBLIC_API_URL: env.NEXT_PUBLIC_API_URL,
+        process_env_NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL
+      });
+    }
+
     if (env.NEXT_PUBLIC_STATIC_WEBSITE_ONLY) {
+      console.log('[useConfig] Static website mode enabled, skipping config fetch');
       setLoading(false);
       return;
     }
-    fetch(resolveServiceURL("./config"))
-      .then((res) => res.json())
+
+    const configURL = resolveServiceURL("config");
+    console.log('[useConfig] Fetching config from:', configURL);
+
+    fetch(configURL)
+      .then((res) => {
+        console.log('[useConfig] Config fetch response status:', res.status);
+        return res.json();
+      })
       .then((config) => {
+        console.log('[useConfig] Config loaded successfully:', config);
         setConfig(config);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch config", err);
+        console.error("[useConfig] Failed to fetch config", err);
         setConfig(null);
         setLoading(false);
       });

@@ -39,21 +39,32 @@ The report should only contain the following 2 sections, no more sections.
    - 报告的简洁标题。
 
 2. **表格总结**
-   - 表格请参照这个例子（内容可以不一样，但是行和列的标题要一样）：
+Strictly follow these rules:
 
+Always output your answer in the exact table format shown below, preserving all column headers and all text in the “维度” (Dimension) column. Do not change the table structure.
 
-| 维度    | 战略主题   | 具体目标与举措（◆ 代表关键战略控制点）                                                        |
-| ----- | ------ | --------------------------------------------------------------------------- |
-| 财务维度  | 资本高效化  | - 总营收突破500亿（2025）<br>- 水源基地工厂ROIC（投资回报率）>18%（行业平均：12%）<br>- 供应链融资降成本提升15% ◆ |
-|          | 成本最优优化 | - 水源-工厂-渠道半径≤150km（覆盖95%市场）<br>- 全产业链成本降低8% ◆                               |
-| 客户维度  | 场景渗透力  | - 家庭用水市占：45%（19L桶装水）◆<br>- 运输场景渗透：电商所占市占率>45%                               |
-|         | 品牌心智占领 | - “天然水源”认知度：95%（核心用户群）<br>- B端满意度（经销商）：NPS≥65 ◆                             |
-| 内部运营  | 水源差异性  | - 新增3处水源开发（2025）<br>- 建立水源精密前后端动态监测系统（实时波动≤0.1ppm） ◆                        |
-|          | 渠道掌控力  | - 社区智能柜水自取布点增加20万个<br>- 最终市场覆盖率：85%（VS竞品触达：72%） ◆                           |
-|          | 供应链弹性  | - 分布式水源工厂响应时效≤48小时<br>- 订单履约时间压缩≥90% ◆                                      |
-| 学习与成长 | 水源科研壁垒 | - 申请功能性成分专利≥5项<br>- 水源科研中心博士团队规模+30% ◆                                      |
-|          | ESG竞争力 | - PET再生率占比：55%（国际要求：30%）<br>- 水源地生态恢复率：95% ◆                                |
-|          | 数字化能力  | - AI模型预测精准度需≥85%<br>- 全员人效提升至260万人次（2023：210万） ◆                            |
+Fill in all empty cells:
+
+In the “战略主题” column, provide strategic directions or themes under the corresponding dimension.
+
+In the “具体目标与举措（◆ 代表关键战略控制点）” column, describe specific goals, measurable targets, and key initiatives. Mark critical control points with “◆” where applicable.
+
+Even if you are unsure of specific details, provide reasonable assumptions or estimates. Never leave cells blank or write “unknown.”
+
+Your response must be a Markdown table only, with no additional text or explanations.
+
+| 维度    | 战略主题   | 具体目标与举措（◆ 代表关键战略控制点） |
+| ------- | ---------- | -------------------------------------- |
+| 财务维度  |             |                                        |
+|          |            |                                      |
+| 客户维度  |             |                                      |
+|          |             |                                      |
+| 内部运营  |             |                                       |
+|          |             |                                       |
+|          |             |                                       |
+| 学习与成长 |             |                                       |
+|          |             |                                       |
+|          |             |                                       |
 
 
 # Writing Guidelines
@@ -193,13 +204,7 @@ The report should only contain the following 2 sections, no more sections.
    {% endif %}
    {% endif %}
 
-# Data Integrity
-
-- Only use information explicitly provided in the input.
-- State "Information not provided" when data is missing.
-- Never create fictional examples or scenarios.
-- If data seems incomplete, acknowledge the limitations.
-- Do not make assumptions about missing information.
+If some information is missing, make reasonable assumptions for predictions.
 
 # Table Guidelines
 
@@ -228,4 +233,5 @@ The report should only contain the following 2 sections, no more sections.
 # Notes
 
 - Directly output the Markdown raw content without "```markdown" or "```".
-- Always use Chinese.
+- In Markdown tables, keep each cell in a single line. No <br> tags or line breaks.
+- 所有内容必须用中文输出。

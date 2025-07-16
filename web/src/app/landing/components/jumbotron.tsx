@@ -34,7 +34,7 @@ export function Jumbotron() {
       <div className="relative z-10 flex flex-col items-center justify-center gap-12">
         <h1 className="text-center text-4xl font-bold md:text-6xl">
           <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Deep Research{" "}
+            飞猫出海AI助手{" "}
           </span>
           <AuroraText>at Your Fingertips</AuroraText>
         </h1>

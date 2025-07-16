@@ -26,3 +26,13 @@ conf.yaml
 # coverage report
 coverage.xml
 coverage/
+
+# OS
+**/.DS_Store
+
+# Logs
+*.log
+log.txt
+
+# docker
+docker/

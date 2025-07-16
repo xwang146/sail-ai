@@ -14,16 +14,17 @@ import { MultiAgentSection } from "./landing/sections/multi-agent-section";
 export default function HomePage() {
   return (
     <div className="flex flex-col items-center">
-      <SiteHeader />
+      {/* <SiteHeader /> */}
       <main className="container flex flex-col items-center justify-center gap-56">
-        <Jumbotron />
+        
+        {/* <Jumbotron />
         <CaseStudySection />
         <MultiAgentSection />
         <CoreFeatureSection />
-        <JoinCommunitySection />
+        <JoinCommunitySection /> */}
       </main>
-      <Footer />
-      <Ray />
+      {/* <Footer />
+      <Ray /> */}
     </div>
   );
 }

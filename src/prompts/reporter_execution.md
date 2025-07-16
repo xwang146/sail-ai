@@ -38,21 +38,39 @@ The report should only contain the following 2 sections, no more sections.
    - 报告的简洁标题。
 
 2. **表格总结**
-   - 表格请参照这个例子（内容可以不一样，但是标题要一样）：
 
-   | 维度    | 战略主题   | 具体目标与举措（◆ 代表关键战略控制点）                                                        | 关键任务清单                                          | 承接部门                  |
-| ----- | ------ | --------------------------------------------------------------------------- | ----------------------------------------------- | --------------------- |
-| 财务维度  | 资本高效化  | - 总营收突破500亿（2025）<br>- 水源基地工厂ROIC（投资回报率）>18%（行业平均：12%）<br>- 供应链融资降成本提升15% ◆ | - 制定盈利增长计划<br>- 提高资本周转效率<br>- 谈判优化供应链融资条款       | 财务部<br>战略投资部          |
-| 财务维度  | 成本最优优化 | - 水源-工厂-渠道半径≤150km（覆盖95%市场）<br>- 全产业链成本降低8% ◆                               | - 优化水源及工厂布局<br>- 降低物流运输成本<br>- 推动精益生产           | 供应链管理部<br>运营部         |
-| 客户维度  | 场景渗透力  | - 家庭用水市占：45%（19L桶装水） ◆<br>- 运输场景渗透：电商所占市占率>45%                              | - 推出家庭用户促销活动<br>- 加强电商渠道合作<br>- 研发适用于不同场景的包装规格  | 市场部<br>电商部            |
-| 客户维度  | 品牌心智占领 | - “天然水源”认知度：95%（核心用户群）<br>- B端满意度（经销商）：NPS≥65 ◆                             | - 制定品牌传播计划<br>- 提升线上线下广告曝光<br>- 开展经销商满意度调研及优化方案 | 品牌部<br>市场部<br>经销商管理部  |
-| 内部运营  | 水源差异性  | - 新增3处水源开发（2025）<br>- 建立水源精密前后端动态监测系统（实时波动≤0.1ppm） ◆                        | - 勘探并开发优质新水源<br>- 建立水质监测数据系统<br>- 培训水质检测人员      | 水源开发部<br>质量管理部        |
-| 内部运营  | 渠道掌控力  | - 社区智能柜水自取布点增加20万个<br>- 最终市场覆盖率：85%（VS竞品触达：72%） ◆                           | - 策划社区投放策略<br>- 开发智能水柜系统<br>- 制定社区合作政策          | 渠道发展部<br>市场部<br>技术研发部 |
-| 内部运营  | 供应链弹性  | - 分布式水源工厂响应时效≤48小时<br>- 订单履约时间压缩≥90% ◆                                      | - 规划分布式工厂布局<br>- 提升订单管理系统性能<br>- 优化物流调度方案       | 供应链管理部<br>物流部<br>IT部  |
-| 学习与成长 | 水源科研壁垒 | - 申请功能性成分专利≥5项<br>- 水源科研中心博士团队规模+30% ◆                                      | - 推动新水源成分研究<br>- 吸引博士及科研人才<br>- 提交核心专利申请        | 技术研发部<br>科研中心         |
-| 学习与成长 | ESG竞争力 | - PET再生率占比：55%（国际要求：30%）<br>- 水源地生态恢复率：95% ◆                                | - 建立塑料循环回收机制<br>- 推动水源保护项目<br>- 发布可持续发展报告       | ESG部<br>生产部<br>公共事务部  |
-| 学习与成长 | 数字化能力  | - AI模型预测精准度需≥85%<br>- 全员人效提升至260万人次（2023：210万） ◆                            | - 建立AI预测模型<br>- 实施数字化培训计划<br>- 升级ERP系统          | 数字化中心<br>IT部<br>人力资源部 |
+Output a table strictly following this format:
 
+| 维度      | 战略主题   | 具体目标与举措（◆ 代表关键战略控制点） | 关键任务清单 | 承接部门 |
+| --------- | ---------- | -------------------------------------- | ------------ | -------- |
+| 财务维度  |            |                                        |              |          |
+| 财务维度  |            |                                        |              |          |
+| 客户维度  |            |                                        |              |          |
+| 客户维度  |            |                                        |              |          |
+| 内部运营  |            |                                        |              |          |
+| 内部运营  |            |                                        |              |          |
+| 内部运营  |            |                                        |              |          |
+| 学习与成长|            |                                        |              |          |
+| 学习与成长|            |                                        |              |          |
+| 学习与成长|            |                                        |              |          |
+
+- You need to append exactly two new columns to the previously generated table for strategy:
+
+  “关键任务清单” (Key Task List)
+
+  “承接部门” (Responsible Department)
+
+- Do not regenerate or rewrite existing table content.
+
+- Fill in the new columns:
+
+   - Key Task List: Based on the “战略主题” and “具体目标与举措,” derive the key actions to be taken. Keep it concise.
+
+   - Responsible Department: Assign responsible departments or teams for each key task. Use Chinese.
+
+   - Keep all original table rows, columns, and content exactly as they are. Do not change, delete, or add to the original content.
+
+- Do not output any extra text or explanations
 
 # Writing Guidelines
 
@@ -226,4 +244,5 @@ The report should only contain the following 2 sections, no more sections.
 # Notes
 
 - Directly output the Markdown raw content without "```markdown" or "```".
-- Always use Chinese.
+- In Markdown tables, keep each cell in a single line. No <br> tags or line breaks.
+- 所有内容必须用中文输出。

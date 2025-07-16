@@ -1,11 +1,14 @@
+version: "3.9"
+
 services:
   backend:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
     container_name: deer-flow-backend
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     env_file:
       - .env
     volumes:
@@ -14,12 +17,39 @@ services:
     networks:
       - deer-flow-network
 
+  nginx:
+    image: nginx:latest
+    platform: linux/amd64
+    container_name: deer-flow-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: ./docker/nginx/
+        target: /etc/nginx/
+      - ./docker/nginx/certs:/etc/nginx/certs:ro
+      - ./docker/nginx/nginx-entrypoint.sh:/docker-entrypoint.d/nginx-entrypoint.sh:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - deer-flow-network
+    environment:
+      - ENABLE_HTTPS=${ENABLE_HTTPS:-false}
+      - NGINX_HTTP_SERVER_NAME=${NGINX_HTTP_SERVER_NAME}
+      - NGINX_HTTPS_SERVER_NAME=${NGINX_HTTPS_SERVER_NAME}
+      - NGINX_PROXY_PASS_IP=${NGINX_PROXY_PASS_IP}
+      - BACKEND_PORT=${BACKEND_PORT}
+    command: /docker-entrypoint.d/nginx-entrypoint.sh
+
   frontend:
+    platform: linux/amd64
     build:
       context: ./web
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+        NEXT_PUBLIC_API_URL: https://chuhai.financialmodeling.tech/api/
     container_name: deer-flow-frontend
     ports:
       - "3000:3000"

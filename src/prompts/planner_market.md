@@ -15,7 +15,6 @@ You must breakdown the major subject into 5 sub-topics exactly as the Analysis F
 3. **看竞品：** 主要竞争对手（本土与国际品牌）的产品、价格、渠道、营销策略。  
 4. **看自己：** 自己本身品牌、产品、技术、团队、竞争方面的优势（SWOT）。  
 5. **看机会：** 结合以上四点，识别出最具吸引力的增长机会点。
-  
 
 ## Information Quantity and Quality Standards
 

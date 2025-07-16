@@ -27,34 +27,37 @@ The report should only contain the following 2 sections, no more sections.
    - A concise title for the report.
 
 2. **表格总结**
-   - 表格请参照这个例子（内容可以不一样，但是标题要一样）：
-   - 表格里的内容请大致估计
 
-## 初始投资 (CAPEX) 明细
+### Final Output Format:
 
-| 子项目 | 估算范围 (IDR) | 模型基准值 (IDR) | 占总投资比例 (%) |
-|--------|----------------|------------------|------------------|
-| 店铺装修与设备 (Fit-out & Equipment) | Rp 35,000,000 – Rp 60,000,000 | Rp 50,000,000 | 47.62% |
-| 公司注册与许可 (Registration & Licenses) | Rp 5,000,000 – Rp 15,000,000 | Rp 10,000,000 | 9.52% |
-| 初始库存 (Initial Inventory) | Rp 20,000,000 – Rp 40,000,000 | Rp 30,000,000 | 28.57% |
-| 租金押金 (Rent Deposit – 3 months) | Rp 13,500,000 – Rp 18,000,000 | Rp 15,000,000 | 14.29% |
+You must consolidate all calculated results into the following two clearly structured tables.
 
-| **总计初始投资 (Total CAPEX)** |  | **Rp 105,000,000** | **100.00%** |
+If you don’t know the exact number, you must make reasonable estimations based on the competitior's or industry's situation. Never write 0 unless the actual value is truly zero.
 
+请参照这个例子（内容可以不一样，但是标题要一样）：
 
+#### **预算总览表**
+| 预算项目 | 预算金额 (MYR) |
+| :--- | :--- |
+| **总收入** | **864,000** |
+| | |
+| **总资本支出** | **158,640** |
+| *— 扩张性资本支出* | 150,000 |
+| *— 维护性资本支出* | 8,640 |
+| **总运营成本** | **500,400** |
+| *— 销售成本 (COGS)* | 302,400 |
+| *— 销售、一般及行政费用 (SG&A)* | 198,000 |
+| | |
+| **总预算 (年度总支出)** | **659,040** |
+| **净利润** | **301,788** |
 
-## 月度运营成本 (OPEX) 明细
-
-| 子项目 | 估算范围 (IDR/月) | 模型基准值 (IDR/月) | 占固定运营成本比例 (%) |
-|--------|-------------------|---------------------|----------------------|
-| 人力成本 (Labor Cost - 2 staff) | Rp 8,000,000 – Rp 12,000,000 | Rp 10,000,000 | 62.50% |
-| 店铺租金 (Rent) | Rp 4,500,000 – Rp 6,000,000 | Rp 5,000,000 | 31.25% |
-| 销货成本 (COGS) | 60% – 70% of Sales | 65% of Sales | 可变 |
-| 水电杂项开支 (Utilities & Others) | Rp 700,000 – Rp 1,500,000 | Rp 1,000,000 | 6.25% |
-
-| **总计固定月度运营成本** |  | **Rp 16,000,000** | **100.00%** |
-
-**总计月度运营成本 (Total Monthly OPEX)** = 固定成本 + 销货成本 (COGS)
+#### **关键业绩与回收指标**
+| 指标名称 | 计算结果 |
+| :--- | :--- |
+| **收支平衡点 (年收入)** | **MYR 304,615** |
+| **投资回收期 (年)** | **0.53 年 (约 6.4 个月)** |
+| **投资回报率 (ROI)** | **190.2%** |
+| **投资回报率 (ROI)** | |
 
 # Writing Guidelines
 
@@ -117,12 +120,6 @@ The report should only contain the following 2 sections, no more sections.
    {% else %}
    - Use a professional tone.
    {% endif %}
-   - Be concise and precise.
-   - Avoid speculation.
-   - Support claims with evidence.
-   - Clearly state information sources.
-   - Indicate if data is incomplete or unavailable.
-   - Never invent or extrapolate data.
 
 2. Formatting:
    - Use proper markdown syntax.
@@ -224,4 +221,5 @@ The report should only contain the following 2 sections, no more sections.
 # Notes
 
 - Directly output the Markdown raw content without "```markdown" or "```".
-- Always use Chinese.
+- In Markdown tables, keep each cell in a single line. No <br> tags or line breaks.
+- 所有内容必须用中文输出。

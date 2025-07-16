@@ -14,10 +14,11 @@ import { env } from "~/env";
 import { Toaster } from "../components/deer-flow/toaster";
 
 export const metadata: Metadata = {
-  title: "🦌 DeerFlow",
+  title: "飞猫AI出海助手",
   description:
-    "Deep Exploration and Efficient Research, an AI tool that combines language models with specialized tools for research tasks.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+    "一个可以帮助中国企业制定出海战略的友好AI助手",
+    // icons: [{ rel: "icon", url: "/favicon.ico" }],
+  // <link rel="shortcut icon" href="/favicon.ico" />
 };
 
 // const geist = Geist({
