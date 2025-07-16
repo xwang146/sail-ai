@@ -49,7 +49,7 @@ services:
       context: ./web
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: https://chuhai.financialmodeling.tech/api/
+        NEXT_PUBLIC_API_URL: $NEXT_PUBLIC_API_URL
     container_name: deer-flow-frontend
     ports:
       - "3000:3000"
